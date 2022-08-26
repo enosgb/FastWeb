@@ -1,17 +1,23 @@
-let table = document.getElementById('tabelaResultados');
+import getUniversiades from "./api-requests.js";
+import tableHeaderTemplate from "./templates.js";
 
-function createTableHeader(table){
+var table = tableHeaderTemplate;
+let elemento = document.getElementById("tabelaResultados");
+
+let universidade = "Centro";
+
+
+getUniversiades("Centro",elemento).then((result) => {
+  result.forEach((value, i) => {
     const template = `
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Site</th>
-                <th>País</th>
-                <th>UF</th>
-            </tr>
-        </thead>
-    `
-    table.innerHTML = template
-}   
-
-createTableHeader(table)
+          <tr>
+             <td>${value.name}</td>
+             <td>${value.web_pages[0]}</td>
+             <td>${value.country}</td>
+             <td>${value.alpha_two_code}</td>
+          </tr>   
+         `;
+         table += template;
+  });
+  elemento.innerHTML = table
+});
